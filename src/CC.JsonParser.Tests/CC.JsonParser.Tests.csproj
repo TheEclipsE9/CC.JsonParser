@@ -27,5 +27,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\CC.JsonParser.Console\CC.JsonParser.Console.csproj" />
+  </ItemGroup>
 
 </Project>
