@@ -1,0 +1,25 @@
+Lexer -- converts raw string into meaningful tokens.
+ 
+ Json tokens:
+- {
+- }
+- [
+- ]
+- :
+- ,
+- "string"
+- 123
+- 1.0
+- true
+- false
+- null
+
+JSON object -- key-value pairs
+
+Values:
+- string
+- number
+- bool
+- null
+- array
+- object

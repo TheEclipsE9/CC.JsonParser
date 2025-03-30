@@ -4,30 +4,48 @@ namespace CC.JsonParser.Tests;
 
 public class TokenizerTests
 {
-    private readonly string Step1ValidFile = Path.Combine(AppContext.BaseDirectory, "tests/tests/step1/valid.json");
-    private readonly string Step1InalidFile = Path.Combine(AppContext.BaseDirectory, "tests/tests/step1/invalid.json");
-    
-    [Fact]
-    public void GetTokens_ReturnsValidTokens()
+    [Theory]
+    [InlineData("{}", 2)]
+    [InlineData("{{[]}}", 6)]//Should fail later
+    [InlineData("{[{}]}", 6)]////Should fail later
+    public void GetTokens_ReturnsTokens_WhenValidJson(string input, int expectedTokenCount)
     {
-        var stream = new StreamReader(Step1ValidFile);
+        //Arrange
+        using var stream = new StreamReader(input.ToStream());
 
         var sut = new Tokenizer();
         
+
+        //Act
         var result = sut.GetTokens(stream);
         
+
+        //Assert
         Assert.NotEmpty(result);
+        Assert.Equal(expectedTokenCount, result.Count);
     }
     
-    [Fact]
-    public void GetTokens_ReturnsEmptyList_WhenFileIsEmpty()
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData("{")]
+    [InlineData("}")]
+    [InlineData("[]")]
+    [InlineData("[")]
+    [InlineData("]")]
+    public void GetTokens_ThrowsException_WhenInvalidJsonFormat(string input)
     {
-        var stream = new StreamReader(Step1InalidFile);
+        //Arrange
+        using var stream = new StreamReader(input.ToStream());
 
         var sut = new Tokenizer();
         
-        var result = sut.GetTokens(stream);
+
+        //Act
+        Action act = () => sut.GetTokens(stream);
         
-        Assert.Empty(result);
+
+        //Assert
+        Assert.Throws<ArgumentException>(act);
     }
 }
