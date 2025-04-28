@@ -24,7 +24,7 @@ namespace CC.JsonParser.Console
 
     public static class TokenTypeExtensions
     {
-        public static TokenType ToTokenType(this char c)
+        public static TokenType ToStructuralTokenType(this char c)
         {
             return c switch
             {
