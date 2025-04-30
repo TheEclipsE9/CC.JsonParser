@@ -64,4 +64,63 @@ public class ParserTests
         //Assert
         Assert.Throws<ArgumentException>(methodCall);
     }
+
+    [Fact]
+    public void ParseNull_ReturnsNull_WhenInputIsValid()
+    {
+        //Arrange
+        var input = "null";
+        var charArray = input.ToCharArray();
+        var sut = new Parser();
+        
+        
+        //Act
+        var result = sut.ParseNull(charArray);
+
+        //Assert
+        Assert.Null(result);
+    }
+    
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("false", false)]
+    public void ParseBoolean_ReturnsValue_WhenInputIsValid(string input, bool expected)
+    {
+        //Arrange
+        var charArray = input.ToCharArray();
+        var sut = new Parser();
+        
+        
+        //Act
+        var result = sut.ParseBoolean(charArray);
+
+        //Assert
+        Assert.Equal(expected, result);
+    }
+    
+    [Theory]
+    [InlineData("tru")]
+    [InlineData("truf")]
+    [InlineData("ture")]
+    [InlineData("fals")]
+    [InlineData("falze")]
+    [InlineData("faLse")]
+    [InlineData("felse")]
+    [InlineData("atrue")]
+    [InlineData("truea")]
+    [InlineData("afalse")]
+    [InlineData("falsea")]
+    public void ParseBoolean_ThrowsException_WhenInputIsInvalid(string input)
+    {
+        //Arrange
+        var charArray = input.ToCharArray();
+        var sut = new Parser();
+        
+        
+        //Act
+        var methodCall = () => sut.ParseBoolean(charArray);
+
+        //Assert
+        Assert.Throws<ArgumentException>(methodCall);
+    }
 }
