@@ -7,18 +7,19 @@ public class ParserTests
     [Theory]
     [InlineData("\"\"", "")]
     [InlineData("\"Hello\"", "Hello")]
-    [InlineData("\"Hello \" World\"", "Hello \" World")]
-    [InlineData("\"\n Hello World\"", "\n Hello World")]
-    [InlineData("\"Hello \nWorld\n\"", "Hello \nWorld\n")]
-    [InlineData("\"\n\\\"Hello\n\\\" \n\\\" \n\\\"World\n\\\"\"", "\n\\\"Hello\n\\\" \n\\\" \n\\\"World\n\\\"")]
+    [InlineData("\"Hello \\\" World\"", "Hello \\\" World")]
+    [InlineData("\"\\n Hello World\"", "\\n Hello World")]
+    [InlineData("\"Hello \\nWorld\\n\"", "Hello \\nWorld\\n")]
+    [InlineData("\"\\n\\\"Hello\\n\\\" \\n\\\" \\n\\\"World\\n\\\"\"", "\\n\\\"Hello\\n\\\" \\n\\\" \\n\\\"World\\n\\\"")]
     public void ParseString_ReturnsValue_WhenStringIsValid(string input, string expectedValue)
     {
         //Arrange
         var charArray = input.ToCharArray();
+        int curPosition = 0;
         var sut = new Parser();
 
         //Act
-        var result = sut.ParseString(charArray);
+        var result = sut.ParseString(charArray, ref curPosition);
         
 
         //Assert
@@ -26,7 +27,6 @@ public class ParserTests
     }
     
     [Theory]
-    [InlineData("")]
     [InlineData("\"")]
     [InlineData("\"Hello")]
     [InlineData("Hello\"")]
@@ -34,10 +34,11 @@ public class ParserTests
     {
         //Arrange
         var charArray = input.ToCharArray();
+        int curPosition = 0;
         var sut = new Parser();
 
         //Act
-        var methodCall = () => sut.ParseString(charArray);
+        var methodCall = () => sut.ParseString(charArray, ref curPosition);
 
         
         //Assert
@@ -55,10 +56,11 @@ public class ParserTests
     public void ParseString_ThrowException_WhenEscapeSequenceIsInvalid(char[] input)
     {
         //Arrange
+        int curPosition = 0;
         var sut = new Parser();
 
         //Act
-        var methodCall = () => sut.ParseString(input);
+        var methodCall = () => sut.ParseString(input, ref curPosition);
 
         
         //Assert
@@ -119,6 +121,49 @@ public class ParserTests
         
         //Act
         var methodCall = () => sut.ParseBoolean(charArray);
+
+        //Assert
+        Assert.Throws<ArgumentException>(methodCall);
+    }
+
+    [Theory]
+    [InlineData("0", 0)]
+    [InlineData("1", 1)]
+    [InlineData("10", 10)]
+    [InlineData("123", 123)]
+    [InlineData("987654", 987654)]
+    public void ParseNumber_ReturnsValue_WhenInputIsValid(string input, int expected)
+    {
+        //Arrange
+        var charArray = input.ToCharArray();
+        var sut = new Parser();
+        
+        
+        //Act
+        var result = sut.ParseNumber(charArray);
+
+        //Assert
+        Assert.Equal(expected, result);
+    }
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData("01")]
+    [InlineData("001")]
+    [InlineData("123a")]
+    [InlineData("a123")]
+    [InlineData("-1")]
+    [InlineData("3.14")]
+    [InlineData("1e3")]
+    public void ParseNumber_ThrowsException_WhenInputIsInvalid(string input)
+    {
+        //Arrange
+        var charArray = input.ToCharArray();
+        var sut = new Parser();
+        
+        
+        //Act
+        var methodCall = () => sut.ParseNumber(charArray);
 
         //Assert
         Assert.Throws<ArgumentException>(methodCall);
