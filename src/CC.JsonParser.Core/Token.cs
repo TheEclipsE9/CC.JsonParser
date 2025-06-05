@@ -17,5 +17,8 @@ namespace CC.JsonParser.Core
         LeftBrace,//    '{'
         RightBrace,//   '}'
         Colon,//        ':'
+
+
+        String,//       '"value"'
     }
 }

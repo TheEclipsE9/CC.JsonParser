@@ -31,9 +31,36 @@ namespace CC.JsonParser.Core
                     tokens.Add(new Token(TokenType.Colon, ':'));
                     continue;
                 }
+
+                if (curChar == '"')
+                {
+                    (Token token, int newPosition) result = TokenizeString(input, i + 1);
+
+                    tokens.Add(result.token);
+                    i = result.newPosition;
+                    
+                    continue;
+                }
             }
 
             return tokens;
+        }
+
+        private (Token, int) TokenizeString(string input, int curPosition)
+        {
+            int valueStart = curPosition;
+
+            for (; curPosition < input.Length; curPosition++)
+            {
+                var curChar = input[curPosition];
+
+                if (curChar == '"')
+                {
+                    return (new Token(TokenType.String, input.Substring(valueStart, curPosition - 1)), curPosition);
+                }
+            }
+
+            throw new Exception("String has not closed.");
         }
     }
 }
