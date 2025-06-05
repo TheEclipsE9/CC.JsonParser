@@ -3,6 +3,8 @@ namespace CC.JsonParser.Core.Tests
     public class LexerTests
     {
         //ToDo: Add more test cases
+        //      - failing
+        //      - edge cases
         //      - whitespaces between tokens
         //      - StringTokenizer
         //          - "
@@ -11,7 +13,50 @@ namespace CC.JsonParser.Core.Tests
         //          - "ab
 
         [Fact]
-        public void Lexer_return_left_brace()
+        public void Lexer_EmptyJsonObject_ReturnsExpectedTokens()
+        {
+            string input = "{}";
+            List<Token> expectedTokens = new List<Token>
+            {
+                new Token(TokenType.LeftBrace, '{'),
+                new Token(TokenType.RightBrace, '}'),
+            };
+
+            var sut = new Lexer();
+
+            var result = sut.Tokenize(input);
+
+            AssertHelper.AssertCountAndEachToken(
+                expectedTokens: expectedTokens,
+                actualTokens: result
+            );
+        }
+
+        [Fact]
+        public void Lexer_SimpleJsonObject_ReturnsExpectedTokens()
+        {
+            string input = "{ \"key\": \"value\" }";
+            List<Token> expectedTokens = new List<Token>
+            {
+                new Token(TokenType.LeftBrace, '{'),
+                new Token(TokenType.String, "key"),
+                new Token(TokenType.Colon, ':'),
+                new Token(TokenType.String, "value"),
+                new Token(TokenType.RightBrace, '}'),
+            };
+
+            var sut = new Lexer();
+
+            var result = sut.Tokenize(input);
+
+            AssertHelper.AssertCountAndEachToken(
+                expectedTokens: expectedTokens,
+                actualTokens: result
+            );
+        }
+
+        [Fact]
+        public void Lexer_SingleLeftBrace()
         {
             string input = "{";
 
@@ -25,7 +70,7 @@ namespace CC.JsonParser.Core.Tests
         }
 
         [Fact]
-        public void Lexer_return_right_brace()
+        public void Lexer_SingleRightBrace()
         {
             string input = "}";
 
@@ -39,7 +84,7 @@ namespace CC.JsonParser.Core.Tests
         }
 
         [Fact]
-        public void Lexer_return_colon()
+        public void Lexer_SingleColon()
         {
             string input = ":";
 
@@ -53,7 +98,7 @@ namespace CC.JsonParser.Core.Tests
         }
 
         [Fact]
-        public void Lexer_return_string()
+        public void Lexer_SingleString()
         {
             string input = "\"value\"";
 

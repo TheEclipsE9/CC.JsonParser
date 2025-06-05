@@ -38,7 +38,7 @@ namespace CC.JsonParser.Core
 
                     tokens.Add(result.token);
                     i = result.newPosition;
-                    
+
                     continue;
                 }
             }
@@ -56,7 +56,7 @@ namespace CC.JsonParser.Core
 
                 if (curChar == '"')
                 {
-                    return (new Token(TokenType.String, input.Substring(valueStart, curPosition - 1)), curPosition);
+                    return (new Token(TokenType.String, input.Substring(valueStart, curPosition - valueStart)), curPosition);
                 }
             }
 
