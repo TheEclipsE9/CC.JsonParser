@@ -44,6 +44,12 @@ namespace CC.JsonParser.Core
                     continue;
                 }
 
+                if (curChar == ',')
+                {
+                    tokens.Add(new Token(TokenType.Comma, ','));
+                    continue;
+                }
+
                 if (curChar == '"')
                 {
                     (Token token, int newPosition) result = TokenizeString(input, i + 1);

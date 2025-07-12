@@ -124,5 +124,19 @@ namespace CC.JsonParser.Core.Tests
             Assert.Equal(TokenType.RightBracket, result[0].TokenType);
             Assert.Equal(']', result[0].Value);
         }
+
+        [Fact]
+        public void Lexer_SingleComma()
+        {
+            string input = ",";
+
+            var sut = new Lexer();
+
+            var result = sut.Tokenize(input);
+
+            Assert.Single(result);
+            Assert.Equal(TokenType.Comma, result[0].TokenType);
+            Assert.Equal(',', result[0].Value);
+        }
     }
 }

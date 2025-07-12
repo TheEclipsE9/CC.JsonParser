@@ -19,7 +19,7 @@ namespace CC.JsonParser.Core
         Colon,//        ':'
         LeftBracket,//  '['
         RightBracket,// ']'
-        
+        Comma,//        ','
 
         String,//       '"value"'
 
