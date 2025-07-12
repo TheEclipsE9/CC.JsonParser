@@ -1,6 +1,6 @@
 namespace CC.JsonParser.Core.Tests;
 
-public class LexerBooleanTest
+public class LexerBooleanTests
 {
     [Fact]
     public void Lexer_True()

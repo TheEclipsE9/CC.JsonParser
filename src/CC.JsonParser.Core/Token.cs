@@ -26,5 +26,7 @@ namespace CC.JsonParser.Core
         Integer,//      '101'
 
         Boolean,//      'true' or 'false'
+
+        Null,//         'null'
     }
 }

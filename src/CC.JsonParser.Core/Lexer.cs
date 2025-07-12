@@ -4,6 +4,9 @@ namespace CC.JsonParser.Core
     {
         private static readonly List<Token> EmptyTokenList = new();
 
+        //ToDo: 
+        //      fix out of range of do substring to extract value
+        //      skip whitespaces
         public List<Token> Tokenize(string input)
         {
             if (String.IsNullOrEmpty(input))
@@ -53,6 +56,16 @@ namespace CC.JsonParser.Core
                 if (curChar == 't' || curChar == 'f')
                 {
                     (Token token, int newPosition) result = TokenizeBoolean(input, i);
+
+                    tokens.Add(result.token);
+                    i = result.newPosition;
+
+                    continue;
+                }
+
+                if (curChar == 'n')
+                {
+                    (Token token, int newPosition) result = TokenizeNull(input, i);
 
                     tokens.Add(result.token);
                     i = result.newPosition;
@@ -148,6 +161,25 @@ namespace CC.JsonParser.Core
             }
 
             throw new Exception("Bad token for boolean.");
+        }
+
+        private (Token, int) TokenizeNull(string input, int curPosition)
+        {
+            if (input[curPosition] == 'n')
+            {
+                var value = input.Substring(curPosition, 4);
+
+                if (value == "null")
+                {
+                    return (new Token(TokenType.Null, value), curPosition + 4);
+                }
+                else
+                {
+                    throw new Exception("Bad token for null.");
+                }
+            }
+
+            throw new Exception("Bad token for null.");
         }
     }
 }
