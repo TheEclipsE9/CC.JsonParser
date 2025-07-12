@@ -50,6 +50,16 @@ namespace CC.JsonParser.Core
                     continue;
                 }
 
+                if (curChar == 't' || curChar == 'f')
+                {
+                    (Token token, int newPosition) result = TokenizeBoolean(input, i);
+
+                    tokens.Add(result.token);
+                    i = result.newPosition;
+
+                    continue;
+                }
+
                 if (curChar == '"')
                 {
                     (Token token, int newPosition) result = TokenizeString(input, i + 1);
@@ -105,6 +115,39 @@ namespace CC.JsonParser.Core
             }
 
             return (new Token(TokenType.Integer, input.Substring(from, to - from)), to - 1);
+        }
+
+        private (Token, int) TokenizeBoolean(string input, int curPosition)
+        {
+            if (input[curPosition] == 't')
+            {
+                var value = input.Substring(curPosition, 4);
+
+                if (value == "true")
+                {
+                    return (new Token(TokenType.Boolean, value), curPosition + 4);
+                }
+                else
+                {
+                    throw new Exception("Bad token for boolean.");
+                }
+            }
+
+            if (input[curPosition] == 'f')
+            {
+                var value = input.Substring(curPosition, 5);
+
+                if (value == "false")
+                {
+                    return (new Token(TokenType.Boolean, value), curPosition + 5);
+                }
+                else
+                {
+                    throw new Exception("Bad token for boolean.");
+                }
+            }
+
+            throw new Exception("Bad token for boolean.");
         }
     }
 }
