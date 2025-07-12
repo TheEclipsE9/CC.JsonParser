@@ -6,7 +6,6 @@ namespace CC.JsonParser.Core
 
         //ToDo: 
         //      fix out of range of do substring to extract value
-        //      skip whitespaces
         public List<Token> Tokenize(string input)
         {
             if (String.IsNullOrEmpty(input))
@@ -16,6 +15,10 @@ namespace CC.JsonParser.Core
             for (int i = 0; i < input.Length; i++)
             {
                 char curChar = input[i];
+
+                if (Char.IsWhiteSpace(curChar))
+                    continue;
+
 
                 if (curChar == '{')
                 {
@@ -92,6 +95,8 @@ namespace CC.JsonParser.Core
 
                     continue;
                 }
+
+                throw new Exception($"Unknown token: {curChar}");
             }
 
             return tokens;
@@ -127,18 +132,23 @@ namespace CC.JsonParser.Core
                     break;
             }
 
+            //Note: return 'to-1' so we don't miss a token
             return (new Token(TokenType.Integer, input.Substring(from, to - from)), to - 1);
         }
 
         private (Token, int) TokenizeBoolean(string input, int curPosition)
         {
-            if (input[curPosition] == 't')
+            int positionMoveSizeForTrue = 3;
+            int positionMoveSizeForFalse = 4;
+
+            if (input[curPosition] == 't' &&
+                curPosition + positionMoveSizeForTrue < input.Length)
             {
                 var value = input.Substring(curPosition, 4);
 
                 if (value == "true")
                 {
-                    return (new Token(TokenType.Boolean, value), curPosition + 4);
+                    return (new Token(TokenType.Boolean, value), curPosition + positionMoveSizeForTrue);
                 }
                 else
                 {
@@ -146,13 +156,14 @@ namespace CC.JsonParser.Core
                 }
             }
 
-            if (input[curPosition] == 'f')
+            if (input[curPosition] == 'f' &&
+                curPosition + positionMoveSizeForFalse < input.Length)
             {
                 var value = input.Substring(curPosition, 5);
 
                 if (value == "false")
                 {
-                    return (new Token(TokenType.Boolean, value), curPosition + 5);
+                    return (new Token(TokenType.Boolean, value), curPosition + positionMoveSizeForFalse);
                 }
                 else
                 {
@@ -165,13 +176,16 @@ namespace CC.JsonParser.Core
 
         private (Token, int) TokenizeNull(string input, int curPosition)
         {
-            if (input[curPosition] == 'n')
+            int positionMoveSize = 3;
+
+            if (input[curPosition] == 'n' &&
+                curPosition + positionMoveSize < input.Length)
             {
                 var value = input.Substring(curPosition, 4);
 
                 if (value == "null")
                 {
-                    return (new Token(TokenType.Null, value), curPosition + 4);
+                    return (new Token(TokenType.Null, value), curPosition + positionMoveSize);
                 }
                 else
                 {

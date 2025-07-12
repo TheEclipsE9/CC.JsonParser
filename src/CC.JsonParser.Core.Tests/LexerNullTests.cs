@@ -17,7 +17,7 @@ public class LexerNullTests
     }
 
     [Fact]
-    public void Lexer_Null_Fails_WhenIncorrectTokenValue()
+    public void Lexer_Null_Fails_WhenTokenValueIncorrect()
     {
         string input = "nbue";
 
@@ -26,13 +26,23 @@ public class LexerNullTests
         Assert.Throws<Exception>(() => sut.Tokenize(input));
     }
 
-    // [Fact]
-    // public void Lexer_Null_Fails_WhenTokenValueContinsNull()
-    // {
-    //     string input = "nullabcd";
+    [Fact]
+    public void Lexer_Null_Fails_WhenTokenValueShort()
+    {
+        string input = "nul";
 
-    //     var sut = new Lexer();
+        var sut = new Lexer();
 
-    //     Assert.Throws<Exception>(() => sut.Tokenize(input));
-    // }
+        Assert.Throws<Exception>(() => sut.Tokenize(input));
+    }
+
+    [Fact]
+    public void Lexer_Null_Fails_WhenTokenValueLong()
+    {
+        string input = "nullabcd";
+
+        var sut = new Lexer();
+
+        Assert.Throws<Exception>(() => sut.Tokenize(input));
+    }
 }
