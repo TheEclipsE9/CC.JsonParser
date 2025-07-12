@@ -41,6 +41,16 @@ namespace CC.JsonParser.Core
 
                     continue;
                 }
+
+                if (Char.IsDigit(curChar))
+                {
+                    (Token token, int newPosition) result = TokenizeInteger(input, i);
+
+                    tokens.Add(result.token);
+                    i = result.newPosition;
+
+                    continue;
+                }
             }
 
             return tokens;
@@ -61,6 +71,22 @@ namespace CC.JsonParser.Core
             }
 
             throw new Exception("String has not closed.");
+        }
+
+        private (Token, int) TokenizeInteger(string input, int curPosition)
+        {
+            int from = curPosition;
+            int to = curPosition + 1;
+
+            for (; to < input.Length; to++)
+            {
+                var curChar = input[to];
+
+                if (Char.IsDigit(curChar) == false)
+                    break;
+            }
+
+            return (new Token(TokenType.Integer, input.Substring(from, to - from)), to - 1);
         }
     }
 }

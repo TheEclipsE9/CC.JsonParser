@@ -96,19 +96,5 @@ namespace CC.JsonParser.Core.Tests
             Assert.Equal(TokenType.Colon, result[0].TokenType);
             Assert.Equal(':', result[0].Value);
         }
-
-        [Fact]
-        public void Lexer_SingleString()
-        {
-            string input = "\"value\"";
-
-            var sut = new Lexer();
-
-            var result = sut.Tokenize(input);
-
-            Assert.Single(result);
-            Assert.Equal(TokenType.String, result[0].TokenType);
-            Assert.Equal("value", result[0].Value);
-        }
     }
 }

@@ -20,5 +20,7 @@ namespace CC.JsonParser.Core
 
 
         String,//       '"value"'
+
+        Integer,//      '101'
     }
 }
