@@ -96,5 +96,33 @@ namespace CC.JsonParser.Core.Tests
             Assert.Equal(TokenType.Colon, result[0].TokenType);
             Assert.Equal(':', result[0].Value);
         }
+
+        [Fact]
+        public void Lexer_SingleLeftBracket()
+        {
+            string input = "[";
+
+            var sut = new Lexer();
+
+            var result = sut.Tokenize(input);
+
+            Assert.Single(result);
+            Assert.Equal(TokenType.LeftBracket, result[0].TokenType);
+            Assert.Equal('[', result[0].Value);
+        }
+
+        [Fact]
+        public void Lexer_SingleRightBracket()
+        {
+            string input = "]";
+
+            var sut = new Lexer();
+
+            var result = sut.Tokenize(input);
+
+            Assert.Single(result);
+            Assert.Equal(TokenType.RightBracket, result[0].TokenType);
+            Assert.Equal(']', result[0].Value);
+        }
     }
 }

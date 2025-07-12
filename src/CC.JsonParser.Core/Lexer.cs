@@ -26,6 +26,18 @@ namespace CC.JsonParser.Core
                     continue;
                 }
 
+                if (curChar == '[')
+                {
+                    tokens.Add(new Token(TokenType.LeftBracket, '['));
+                    continue;
+                }
+
+                if (curChar == ']')
+                {
+                    tokens.Add(new Token(TokenType.RightBracket, ']'));
+                    continue;
+                }
+
                 if (curChar == ':')
                 {
                     tokens.Add(new Token(TokenType.Colon, ':'));
