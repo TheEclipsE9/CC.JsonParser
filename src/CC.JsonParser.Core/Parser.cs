@@ -23,6 +23,7 @@ public class Parser
         return token.TokenType switch
         {
             TokenType.String => new JsonString { Value = token.Value.ToString() },
+            TokenType.Integer => new JsonInteger { Value = int.Parse(token.Value.ToString())},
             _ => throw new Exception($"Unexpected token: {token.TokenType}")
         };
     }
