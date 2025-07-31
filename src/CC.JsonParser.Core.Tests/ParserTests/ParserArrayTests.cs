@@ -40,7 +40,7 @@ public class ParserArrayTests
     }
 
     [Fact]
-    public void ParsesSingleBoolTokenAsFalse()
+    public void ThrowsErrorIfArrayNotClosed()
     {
         //Arrange
         List<Token> tokens = new List<Token>
