@@ -1,6 +1,6 @@
 using System;
 
-namespace CC.JsonParser.Core.Tests;
+namespace CC.JsonParser.Core.Tests.LexerTests;
 
 public class LexerStringTests
 {

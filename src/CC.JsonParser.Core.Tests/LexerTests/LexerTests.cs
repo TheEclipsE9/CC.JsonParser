@@ -1,4 +1,4 @@
-namespace CC.JsonParser.Core.Tests
+namespace CC.JsonParser.Core.Tests.LexerTests
 {
     public class LexerTests
     {
@@ -139,7 +139,7 @@ namespace CC.JsonParser.Core.Tests
             Assert.Equal(',', result[0].Value);
         }
 
-        
+
 
         #region GPT generated tests
 
