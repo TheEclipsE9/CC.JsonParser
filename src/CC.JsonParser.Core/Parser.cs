@@ -62,6 +62,12 @@ public class Parser
 
             if (curToken.TokenType == TokenType.Comma)
             {
+                if (position + 1 >= tokens.Count ||
+                    tokens[position + 1].TokenType != TokenType.String)
+                {
+                    throw new Exception("Invalid comma detected!!! haha Next shuld be key string");
+                }
+
                 key = null;
                 position++;
                 continue;
