@@ -26,7 +26,7 @@ public class Parser
             TokenType.String => new JsonString { Value = token.Value.ToString() },
             TokenType.Integer => new JsonInteger { Value = int.Parse(token.Value.ToString()) },
             TokenType.Boolean => new JsonBoolean { Value = bool.Parse(token.Value.ToString()) },
-            TokenType.Null => token.Value is null ? JsonNull.Instance : throw new ArgumentException("Token of type Null must contain null as value"),
+            TokenType.Null => token.Value is null || string.Equals(token.Value.ToString(), "null", StringComparison.OrdinalIgnoreCase) ? JsonNull.Instance : throw new ArgumentException("Token of type Null must contain null as value"),
             TokenType.LeftBracket => ParseArray(tokens, ref position),
             TokenType.LeftBrace => ParseObject(tokens, ref position),
             _ => throw new Exception($"Unexpected token: {token.TokenType}")
@@ -45,6 +45,7 @@ public class Parser
             var curToken = tokens[position];
             if (curToken.TokenType == TokenType.RightBrace)
             {
+                position++;
                 return jsonObject;
             }
             if (key is null && curToken.TokenType == TokenType.String)
@@ -83,6 +84,7 @@ public class Parser
             var curToken = tokens[position];
             if (curToken.TokenType == TokenType.RightBracket)
             {
+                position++;
                 return jsonArray;
             }
 
