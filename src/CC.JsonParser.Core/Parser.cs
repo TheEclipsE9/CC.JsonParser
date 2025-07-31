@@ -24,6 +24,7 @@ public class Parser
         {
             TokenType.String => new JsonString { Value = token.Value.ToString() },
             TokenType.Integer => new JsonInteger { Value = int.Parse(token.Value.ToString())},
+            TokenType.Boolean => new JsonBoolean { Value = bool.Parse(token.Value.ToString())},
             _ => throw new Exception($"Unexpected token: {token.TokenType}")
         };
     }
