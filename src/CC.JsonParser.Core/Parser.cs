@@ -4,27 +4,25 @@ namespace CC.JsonParser.Core;
 
 public class Parser
 {
-    private List<Token> _tokens;
-    private int _position;
-
     public JsonValue Parse(List<Token> tokens)
     {
-        _tokens = tokens;
-        _position = 0;
+        int i = 0;
+        while (i < tokens.Count)
+        {
+            var curToken = tokens[i];
 
-        return ParseValue();
+            return ParseValue(curToken);
+        }
+
+        throw new ArgumentException();
     }
 
-    private Token Peek() => _tokens[_position];
-    private Token Consume() => _tokens[_position++];
 
-    private JsonValue ParseValue()
+    private JsonValue ParseValue(Token token)
     {
-        var token = Peek();
-
         return token.TokenType switch
         {
-            TokenType.String => new JsonString { Value = Consume().Value.ToString() },
+            TokenType.String => new JsonString { Value = token.Value.ToString() },
             _ => throw new Exception($"Unexpected token: {token.TokenType}")
         };
     }
